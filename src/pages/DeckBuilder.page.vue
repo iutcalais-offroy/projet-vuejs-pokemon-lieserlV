@@ -1,5 +1,5 @@
 <template>
-  Complete this template
+ <p v-if="connectedUser">Connected User : {{ user }}</p>
 </template>
 
 <script lang="ts" setup>
