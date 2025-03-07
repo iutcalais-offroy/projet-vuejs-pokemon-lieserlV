@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import jwt from "jsonwebtoken";
 let currentId = 0; // Initialize a simple incrementing id
 
 export const useUserStore = defineStore('user', () => {
@@ -7,9 +8,7 @@ export const useUserStore = defineStore('user', () => {
 
     async function addUser(username: string, password: string): Promise<void> {
         const id = currentId++; // Increment the id for each new user
-        const token = jwt.sign({ userId: 123 }, 'secretKey', { expiresIn: '1h' });
         users.value.push({ id, username, password });
-        localStorage.setItem('userToken', token); // Store the token in local storage
     }
 
     async function removeUser(username: string): Promise<void> {
@@ -23,7 +22,8 @@ export const useUserStore = defineStore('user', () => {
     async function verifyPassword(username: string, password: string): Promise<boolean> {
         const user = await getUser(username);
         if (user) {
-            return user.password === password;
+            const token = jwt.sign({
+            return token;
         }
         return false;
     }

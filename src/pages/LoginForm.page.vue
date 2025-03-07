@@ -1,7 +1,7 @@
 <template>
   <n-card>
     <n-text>Connexion / Inscription <br><br></n-text>
-    <n-tabs type="line">
+    <n-tabs type="line" ref="tabs">
       <n-tab-pane name="login" tab="Se connecter">
         <n-form @submit.prevent="login">
           <n-form-item label="Adresse email">
@@ -13,7 +13,7 @@
           <n-form-item>
             <n-button type="primary" htmlType="submit">Connexion</n-button>
           </n-form-item>
-          <n-text>Pas de compte ? <a @click="() => $refs.tabs.setActiveName('register')">S'inscrire</a></n-text>
+          <n-text>Pas de compte ? <a @click="() => setActiveTab('register')">S'inscrire</a></n-text>
         </n-form>
       </n-tab-pane>
       <n-tab-pane name="register" tab="S'inscrire">
@@ -30,7 +30,7 @@
           <n-form-item>
             <n-button type="primary" htmlType="submit">S'inscrire</n-button>
           </n-form-item>
-          <n-text>Déjà un compte ? <a @click="() => $refs.tabs.setActiveName('login')">Se connecter</a></n-text>
+          <n-text>Déjà un compte ? <a @click="setActiveTab('login')">Se connecter</a></n-text>
         </n-form>
       </n-tab-pane>
     </n-tabs>
@@ -39,7 +39,6 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { useUserStore } from '../stores/user.store';
 import { NButton, NCard, NText, NInput } from 'naive-ui';
 import { router } from '../router';
 
@@ -47,15 +46,30 @@ const user = ref<string>('');
 const password = ref<string>('');
 const confirmPassword = ref<string>('');
 
-const userStore = useUserStore();
-
 async function login() {
-  const isValid = await userStore.verifyPassword(user.value, password.value);
-  if (isValid) {
-    alert('Connexion réussie');
-    router.push('/deck-builder');
-  } else {
-    alert('Nom d\'utilisateur ou mot de passe incorrect');
+  // Appel à l'API pour vérifier les identifiants
+  try {
+    const response = await fetch('https://pokemon-api-seyrinian-production.up.railway.app/users/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: user.value,
+        password: password.value
+      })
+    });
+    const data = await response.json();
+    if (response.ok) {
+      const token = data.token;
+      localStorage.setItem('token', token);
+      alert('Connexion réussie');
+      router.push('/deck-builder');
+    } else {
+      alert('Nom d\'utilisateur ou mot de passe incorrect');
+    }
+  } catch (e) {
+    alert('Erreur lors de la connexion : ' + e);
   }
 }
 
@@ -64,8 +78,34 @@ async function register() {
     alert('Les mots de passe ne correspondent pas');
     return;
   }
-  await userStore.addUser(user.value, password.value);
-  alert('Inscription réussie');
+  // Appel à l'API pour créer un nouvel utilisateur
+  try {
+    const response = await fetch('https://pokemon-api-seyrinian-production.up.railway.app/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: user.value,
+        password: password.value
+      })
+    });
+    const data = await response.json();
+    if (response.ok) {
+      alert('Inscription réussie');
+    } else {
+      alert('Erreur lors de l\'inscription');
+    }
+  } catch (e) {
+    alert('Erreur lors de l\'inscription : ' + e);
+  }
+}
+const tabs = ref();
+
+function setActiveTab(name: string) {
+  if (tabs.value) {
+    tabs.value.setActiveName(name);
+  }
 }
 </script>
 
