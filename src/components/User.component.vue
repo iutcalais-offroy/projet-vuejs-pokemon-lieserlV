@@ -1,8 +1,30 @@
-import { ref } from 'vue';
-import { router } from '../router';
+<template>
+  <div>
+    <h2>Login</h2>
+    <input v-model="email" type="email" placeholder="Email" />
+    <input v-model="password" type="password" placeholder="Password" />
+    <button @click="login">Login</button>
 
-export const async function login(email: string, password: string) {
-  // Appel à l'API pour vérifier les identifiants
+    <h2>Register</h2>
+    <input v-model="registerEmail" type="email" placeholder="Email" />
+    <input v-model="registerPassword" type="password" placeholder="Password" />
+    <input v-model="confirmPassword" type="password" placeholder="Confirm Password" />
+    <button @click="register">Register</button>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const email = ref('');
+const password = ref('');
+const registerEmail = ref('');
+const registerPassword = ref('');
+const confirmPassword = ref('');
+const router = useRouter();
+
+async function login() {
   try {
     const response = await fetch('https://pokemon-api-seyrinian-production.up.railway.app/users/login', {
       method: 'POST',
@@ -10,7 +32,7 @@ export const async function login(email: string, password: string) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email: user.value,
+        email: email.value,
         password: password.value
       })
     });
@@ -21,18 +43,18 @@ export const async function login(email: string, password: string) {
       alert('Connexion réussie');
       router.push('/deck-builder');
     } else {
-      alert('Nom d\'utilisateur ou mot de passe incorrect');
+      alert('Erreur lors de la connexion : ' + data.message);
     }
   } catch (e) {
     alert('Erreur lors de la connexion : ' + e);
+  }
 }
 
-export const async function register(email: string, password: string, confirmPassword: string) {
-  if (password.value !== confirmPassword.value) {
+async function register() {
+  if (registerPassword.value !== confirmPassword.value) {
     alert('Les mots de passe ne correspondent pas');
     return;
   }
-  // Appel à l'API pour créer un nouvel utilisateur
   try {
     const response = await fetch('https://pokemon-api-seyrinian-production.up.railway.app/users', {
       method: 'POST',
@@ -40,17 +62,18 @@ export const async function register(email: string, password: string, confirmPas
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email: user.value,
-        password: password.value
+        email: registerEmail.value,
+        password: registerPassword.value
       })
     });
     const data = await response.json();
     if (response.ok) {
       alert('Inscription réussie');
     } else {
-      alert('Erreur lors de l\'inscription');
+      alert('Erreur lors de l\'inscription : ' + data.message);
     }
   } catch (e) {
     alert('Erreur lors de l\'inscription : ' + e);
   }
 }
+</script>

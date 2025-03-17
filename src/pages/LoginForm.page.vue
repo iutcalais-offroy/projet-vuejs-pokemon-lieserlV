@@ -40,7 +40,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { NButton, NCard, NText, NInput } from 'naive-ui';
-import { login, register } from '../components/User.component.vue';
+import login from "../components/User.component.vue";
+import register from "../components/User.component.vue";
 
 const user = ref<string>('');
 const password = ref<string>('');
