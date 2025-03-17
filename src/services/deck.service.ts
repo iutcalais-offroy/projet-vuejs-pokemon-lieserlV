@@ -28,19 +28,23 @@ export const createDeck = async (name: string, cards: Pokemon[]) => {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             },
-            body: JSON.stringify({ name, cards })
+            body: JSON.stringify({ 
+                name, 
+                cards: cards.map(pokemon => pokemon.id)
+            })
         });
 
         const data = await response.json();
         if (response.ok) {
             return { success: true, deck: data };
         } else {
-            return { success: false, message: data.message };
+            return { success: false, message: data.message || "Erreur inconnue" };
         }
     } catch (e) {
         return { success: false, message: e };
     }
 };
+
 
 export const deleteDeck = async (id: number) => {
     try {
