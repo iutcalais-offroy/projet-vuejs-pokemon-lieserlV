@@ -68,7 +68,7 @@ async function handleLogin() {
 async function handleRegister() {
   const success = await register(user.value, password.value, confirmPassword.value);
   if (success) {
-    router.push('/DeckBuilder');
+    tabs.value.setActiveName('login');
   }
 }
 </script>
