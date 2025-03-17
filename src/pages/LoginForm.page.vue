@@ -1,7 +1,7 @@
 <template>
   <n-card>
     <n-text>Connexion / Inscription <br><br></n-text>
-    <n-tabs type="line" ref="tabs">
+    <n-tabs type="line" v-model:value="activeTab">
       <n-tab-pane name="login" tab="Se connecter">
         <n-form @submit.prevent="handleLogin">
           <n-form-item label="Adresse email">
@@ -49,26 +49,36 @@ import { login, register } from '../services/auth.service';
 const user = ref<string>('');
 const password = ref<string>('');
 const confirmPassword = ref<string>('');
-const tabs = ref();
+const activeTab = ref('login');
 const router = useRouter();
 
 function setActiveTab(name: string) {
-  if (tabs.value) {
-    tabs.value.setActiveName(name);
-  }
+  activeTab.value = name;
 }
 
 async function handleLogin() {
-  const success = await login(user.value, password.value);
-  if (success) {
-    router.push('/DeckBuilder');
+  try {
+    const success = await login(user.value, password.value);
+    if (success) {
+      router.push('/deck-builder');
+    } else {
+      console.log('Erreur lors de la connexion');
+    }
+  } catch (error) {
+    console.error('Erreur lors de la connexion:', error);
   }
 }
 
 async function handleRegister() {
-  const success = await register(user.value, password.value, confirmPassword.value);
-  if (success) {
-    tabs.value.setActiveName('login');
+  try {
+    const success = await register(user.value, password.value, confirmPassword.value);
+    if (success) {
+      setActiveTab('login');
+    } else {
+      console.log('Erreur lors de l\'inscription');
+    }
+  } catch (error) {
+    console.error('Erreur lors de l\'inscription:', error);
   }
 }
 </script>
