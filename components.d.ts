@@ -36,6 +36,7 @@ declare module 'vue' {
     NTabPane: typeof import('naive-ui')['NTabPane']
     NTabs: typeof import('naive-ui')['NTabs']
     NTag: typeof import('naive-ui')['NTag']
+    NText: typeof import('naive-ui')['NText']
     'PokemonCard.component': typeof import('./src/components/PokemonCard.component.vue')['default']
     'Register.component': typeof import('./src/components/Register.component.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
