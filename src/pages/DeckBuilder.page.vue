@@ -28,7 +28,7 @@ const connectedUser = ref<string | null>(null);
 const pokemons = ref<Pokemon[]>([]);
 const search = ref<string>('');
 const filteredPokemons = computed(() => {
-    return pokemons.value.filter(pokemon => pokemon.name.includes(search.value));
+    return pokemons.value.filter(pokemon => pokemon.name.toLowerCase().includes(search.value.toLowerCase()));
 });
 
 
