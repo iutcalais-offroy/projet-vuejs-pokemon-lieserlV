@@ -1,15 +1,21 @@
 <template>
     <p v-if="connectedUser">Connected User : {{ connectedUser }}</p>
 
+    <n-form class="search-form">
+        <n-form-item label="Rechercher un Pokémon">
+            <n-input v-model:value="search" placeholder="Nom du Pokémon" />
+        </n-form-item>
+    </n-form>
+
     <div class="pokemon-container">
-        <div v-for="pokemon in pokemons" :key="pokemon.id">
+        <div v-for="pokemon in filteredPokemons" :key="pokemon.id">
             <PokemonCardComponent :pokemon="pokemon" />
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { isLoggedIn, getUser } from '../services/auth.service';
 import { getPokemons } from '../services/pokemon.service';
@@ -19,8 +25,12 @@ import type { Pokemon } from '../types/pokemon.type.ts';
 const router = useRouter();
 
 const connectedUser = ref<string | null>(null);
-
 const pokemons = ref<Pokemon[]>([]);
+const search = ref<string>('');
+const filteredPokemons = computed(() => {
+    return pokemons.value.filter(pokemon => pokemon.name.includes(search.value));
+});
+
 
 if (!isLoggedIn()) {
     router.push('/login');
@@ -63,5 +73,11 @@ try {
         flex: 1 1 calc(100% - 16px); /* Une carte par ligne */
     }
     box-sizing: border-box;
+}
+
+.search-form {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 </style>
