@@ -1,8 +1,9 @@
-// L'API utilisé ici est la mienne
+// Je garde ce fichier en sauvegarde vu que je détourne l'autre fichier vers mon API
+// Car l'API de Seyrinian ne fonctionne plus
 
 export const login = async (email: string, password: string) => {
   try {
-    const response = await fetch('http://localhost:3000/users/login', {
+    const response = await fetch('https://pokemon-api-seyrinian-production.up.railway.app/users/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -44,7 +45,7 @@ export const register = async (email: string, password: string, confirmPassword:
   }
 
   try {
-    const response = await fetch('http://localhost:3000/users', {
+    const response = await fetch('https://pokemon-api-seyrinian-production.up.railway.app/users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })

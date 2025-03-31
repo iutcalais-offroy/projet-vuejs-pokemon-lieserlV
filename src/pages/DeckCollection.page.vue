@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, h } from "vue";
+import { ref, h, onMounted } from "vue";
 import { NButton, NText, NModal, NCard, NDataTable } from "naive-ui";
 import PokemonCardComponent from "../components/PokemonCard.component.vue";
 import { getDeckByUserId, deleteDeck } from "../services/deck.service";
@@ -30,10 +30,17 @@ const decks = ref([]);
 
 const fetchDecks = async () => {
   const userId = localStorage.getItem("id");
-  decks.value = await getDeckByUserId(userId ? Number(userId) : 0);
+  const tempdeck = await getDeckByUserId(userId ? Number(userId) : 0);
+  decks.value = tempdeck.map((deck: Deck) => ({
+    ...deck,
+    cards: deck.cards.map((card: any) => ({
+      ...card,
+      id: card.id,
+    })),
+  }));
+  decks.value.sort((a: Deck, b: Deck) => a.id - b.id);
+  return decks;
 };
-
-import { onMounted } from "vue";
 
 onMounted(async () => {
   await fetchDecks();

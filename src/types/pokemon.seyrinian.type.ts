@@ -20,13 +20,14 @@ export interface Pokemon {
   id: number;
   name: string;
   pokedexId: number;
-  typeIds: Type;
+  typeId: number;
   lifePoints: number;
   imageUrl: string;
   height: number;
   weight: number;
   attackId: number;
   weaknessId: number;
+  type: Type;
   attack: Attack;
   weakness: Weakness;
 }
