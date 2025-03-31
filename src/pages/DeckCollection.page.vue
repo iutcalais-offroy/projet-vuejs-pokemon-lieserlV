@@ -74,21 +74,21 @@ const columns = ref([
     title: "Actions",
     key: "actions",
     render: (row: Deck) =>
-      h("div", { class: "action-buttons" }, [
-        h(
-          NButton,
-          { type: "primary", size: "small", onClick: () => openModal(row) },
-          { default: () => "Détails" }
-        ),
-        h(
-          NButton,
-          {
-            type: "error",
-            size: "small",
-            onClick: () => handleDeleteDeck(row.id),
-          },
-          { default: () => "Supprimer" }
-        ),
+      h("div", { class: "action-buttons", style: { gap: "8px", display: "flex" } }, [
+      h(
+        NButton,
+        { type: "primary", size: "small", onClick: () => openModal(row) },
+        { default: () => "Détails" }
+      ),
+      h(
+        NButton,
+        {
+        type: "error",
+        size: "small",
+        onClick: () => handleDeleteDeck(row.id),
+        },
+        { default: () => "Supprimer" }
+      ),
       ]),
   },
 ]);
