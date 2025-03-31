@@ -8,7 +8,7 @@
       <n-text>Détails du deck</n-text>
 
       <div class="pokemon-container">
-        <div v-for="pokemon in selectedDeck?.cards" :key="pokemon.id">
+        <div v-for="pokemon in selectedDeck?.cards || []" :key="pokemon.id">
           <PokemonCardComponent :pokemon="pokemon" />
         </div>
       </div>
@@ -33,7 +33,11 @@ const fetchDecks = async () => {
   decks.value = await getDeckByUserId(userId ? Number(userId) : 0);
 };
 
-fetchDecks();
+import { onMounted } from "vue";
+
+onMounted(async () => {
+  await fetchDecks();
+});
 
 // État du modal et deck sélectionné
 const isModalOpen = ref(false);
@@ -47,7 +51,12 @@ const openModal = (deck: Deck) => {
 
 // Supprimer un deck
 const handleDeleteDeck = async (id: number) => {
-  await deleteDeck(id);
+  try {
+    await deleteDeck(id);
+    await fetchDecks(); // Refresh the decks after deletion
+  } catch (error) {
+    console.error("Failed to delete deck:", error);
+  }
 };
 
 // Définition des colonnes pour le tableau
