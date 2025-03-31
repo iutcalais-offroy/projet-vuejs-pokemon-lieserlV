@@ -2,7 +2,7 @@ import type { Pokemon } from "../types/pokemon.type";
 
 export async function getPokemons(): Promise<Pokemon[]> {
     try {
-        const response = await fetch('http://localhost:3000/pokemons-cards');
+        const response = await fetch('https://pokemon-api-seyrinian-production.up.railway.app/pokemon-cards');
         const data = response.json();
         return data;
     } catch (e) {
@@ -12,7 +12,7 @@ export async function getPokemons(): Promise<Pokemon[]> {
 
 export async function getPokemonById(id: number): Promise<Pokemon> {
     try {
-        const response = await fetch(`http://localhost:3000/pokemon-cards/${id}`);
+        const response = await fetch(`https://pokemon-api-seyrinian-production.up.railway.app/pokemon-cards/${id}`);
         const data = response.json();
         return data;
     } catch (e) {

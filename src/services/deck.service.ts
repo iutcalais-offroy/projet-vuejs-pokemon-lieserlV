@@ -2,7 +2,7 @@ import type { Pokemon } from "../types/pokemon.type";
 
 export const getDecks = async () => {
     try {
-        const response = await fetch('http://localhost:3000/decks');
+        const response = await fetch('https://pokemon-api-seyrinian-production.up.railway.app/decks');
         const data = response.json();
         return data;
     } catch (e) {
@@ -12,7 +12,7 @@ export const getDecks = async () => {
 
 export const getDeckById = async (id: number) => {
     try {
-        const response = await fetch(`http://localhost:3000/decks/${id}`);
+        const response = await fetch(`https://pokemon-api-seyrinian-production.up.railway.app/decks/${id}`);
         const data = response.json();
         return data;
     } catch (e) {
@@ -22,7 +22,7 @@ export const getDeckById = async (id: number) => {
 
 export const createDeck = async (name: string, cards: Pokemon[]) => {
     try {
-        const response = await fetch('http://localhost:3000/decks', {
+        const response = await fetch('https://pokemon-api-seyrinian-production.up.railway.app/decks', {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
@@ -48,9 +48,9 @@ export const createDeck = async (name: string, cards: Pokemon[]) => {
 
 export const deleteDeck = async (id: number) => {
     try {
-        const response = await fetch(`http://localhost:3000/decks/${id}`, {
+        const response = await fetch(`https://pokemon-api-seyrinian-production.up.railway.app/decks/${id}`, {
             method: 'DELETE',
-            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token')}
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
         });
 
         const data = await response.json();
@@ -66,13 +66,10 @@ export const deleteDeck = async (id: number) => {
 
 export const getDeckByUserId = async (id: number) => {
     try {
-        const response = await fetch(`http://localhost:3000/decks/`);
+        const response = await fetch(`https://pokemon-api-seyrinian-production.up.railway.app/decks/`);
         const data = await response.json();
-        console.log(id);
-        console.log(data);
 
-        const decks = data.filter((deck: any) => deck.ownerid === 4);
-        console.log(decks);
+        const decks = data.filter((deck: any) => deck.userid === id);
         return decks;
     } catch (e) {
         throw new Error("Erreur lors de la récupération des decks de l'utilisateur : " + e);    

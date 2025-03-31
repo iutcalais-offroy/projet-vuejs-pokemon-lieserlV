@@ -1,22 +1,18 @@
 <template>
     <n-card class="pokemon-card">
-        <img :src="pokemon.imageUrl" :alt="pokemon?.name || 'No Image Available'" class="pokemon-image" />
+        <img :src="pokemon.imageUrl" :alt="pokemon.name" class="pokemon-image" />
         <div class="pokemon-top">
             <n-text class="pokemon-name">{{ pokemon.name }}</n-text>
             <n-text class="pokemon-life" style="color: red;">{{ pokemon.lifePoints }} PV</n-text>
-            <n-tag v-if="pokemon.typeIds?.name" :style="{ backgroundColor: getTypeColor(pokemon.typeIds.name) }" class="pokemon-type">{{
-                pokemon.typeIds.name }}</n-tag>
-            <n-tag v-else class="pokemon-type">Unknown</n-tag>
+            <n-tag :style="{ backgroundColor: getTypeColor(pokemon.type.name) }" class="pokemon-type">{{
+                pokemon.type.name }}</n-tag>
         </div>
         <div class="pokemon-height-weight">
             <n-text>Taille : {{ pokemon.height }}m | Poids : {{ pokemon.weight }} kg </n-text>
         </div>
-        <div v-if="pokemon.attack" class="pokemon-attacks">
+        <div class="pokemon-attacks">
             <n-text class="pokemon-attack-name">{{ pokemon.attack.name }}</n-text>
             <n-text class="pokemon-attack-damages">{{ pokemon.attack.damages }} PV</n-text>
-        </div>
-        <div v-else class="pokemon-attacks">
-            <n-text>Aucune attaque disponible</n-text>
         </div>
     </n-card>
 </template>
