@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    '(copie)': typeof import('./src/components/PokemonCard.component (copie).vue')['default']
     'HeaderMenu.component': typeof import('./src/components/HeaderMenu.component.vue')['default']
     HeaderMenuComponent: typeof import('./src/components/HeaderMenu.component.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
@@ -33,13 +34,18 @@ declare module 'vue' {
     NSpace: typeof import('naive-ui')['NSpace']
     NSpin: typeof import('naive-ui')['NSpin']
     NSpinner: typeof import('naive-ui')['NSpinner']
+    NTable: typeof import('naive-ui')['NTable']
+    NTableColumn: typeof import('naive-ui')['NTableColumn']
     NTabPane: typeof import('naive-ui')['NTabPane']
     NTabs: typeof import('naive-ui')['NTabs']
     NTag: typeof import('naive-ui')['NTag']
+    NText: typeof import('naive-ui')['NText']
     'PokemonCard.component': typeof import('./src/components/PokemonCard.component.vue')['default']
+    'PokemonCard.seyrinian.component': typeof import('./src/components/PokemonCard.seyrinian.component.vue')['default']
     'Register.component': typeof import('./src/components/Register.component.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     'SignIn.component': typeof import('./src/components/SignIn.component.vue')['default']
+    'User.component': typeof import('./src/components/User.component.vue')['default']
   }
 }
